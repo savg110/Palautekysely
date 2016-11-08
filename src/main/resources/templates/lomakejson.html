@@ -3,8 +3,10 @@
 <head>
 <meta charset="utf-8"/>
 <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.1.1/jquery.min.js"></script>
+<script src="https://ajax.googleapis.com/ajax/libs/angularjs/1.4.8/angular.min.js"></script>
+<style> .ng-cloak { display: none !important; } </style>
 <script>
-$(document).ready(function(){
+/*$(document).ready(function(){
         $.getJSON("kysymykset.JSON", function(result){
             $.each(result, function(i, field){
                 $("form").append(field.id + ".  " +field.kysymys + "<br/>").append("<input name="+field.id+"/><br/>");
@@ -42,16 +44,50 @@ $(document).ready(function(){
             });
  
        
-});
+});*/
 </script>
 </head>
 <body>
-<div id="response">
+<!--  <div id="response">
 <pre></pre>
 </div>
 <form id="vastauslomake">
 
 <input type="submit" id="submit" value="Submit"/><br/>
+</form> -->
+<div ng-app="myApp" ng-controller="myCtrl">
+
+<form  name="lomake"  ng-submit="submitForm()" >
+
+  <div  class="form-group " ng-repeat="kysymys in myWelcome" >
+  
+    <label >{{ kysymys.id }}. {{ kysymys.kysymys }}</label>
+    <br/>
+    <input type="text" class="form-control" name="{{ kysymys.id }}" />
+    <br/>
+    <p class="help-block" ng-show="userForm.email.$invalid">Valid Email Address Required</p>
+  </div>
+	<button type="submit" class="btn btn-primary">Submit</button>
 </form>
+
+</div>
+
+<script>
+var app = angular.module('myApp', []);
+app.controller('myCtrl', function($scope, $http) {
+  $http.get("kysymykset.JSON")
+  .then(function(response) {
+      $scope.myWelcome = response.data;
+  });
+  $scope.submitForm=function(){
+   
+      var data=$scope.vastaus;  
+      console.log(data);
+      /* post to server*/
+      $http.post('talletavastaus', data);        
+  }
+});
+
+</script>
 </body>
 </html>

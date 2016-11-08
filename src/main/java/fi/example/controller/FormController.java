@@ -33,7 +33,8 @@ public class FormController {
 	VastausCRUDRepo vasrepo;
 	
 	@GetMapping("kysymykset.JSON")
-	public List<Kysymys> haePelitJSON() {
+	public List<Kysymys> haeKysymyksetJSON() {
+		System.out.println(kysrepo.findAll());
 		 return (List<Kysymys>) kysrepo.findAll();
 	}
 	@PostMapping("talletavastaus")

@@ -27,13 +27,13 @@ public class WebConfiguration extends WebMvcConfigurerAdapter {
         registry.addViewController("/").setViewName("lomakejson");
       
     }
-    @Bean
+   /* @Bean
     public ViewResolver viewResolver() {
         InternalResourceViewResolver viewResolver = new InternalResourceViewResolver();
-        viewResolver.setPrefix("/templates");
+        viewResolver.setPrefix("templates/");
         viewResolver.setSuffix(".html");
         return viewResolver;
-    }
+    }*/
     @Override
     public void addResourceHandlers(ResourceHandlerRegistry registry) {
         registry.addResourceHandler("/static/**").addResourceLocations("/static/");
