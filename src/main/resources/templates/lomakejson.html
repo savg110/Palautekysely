@@ -48,44 +48,96 @@
 </script>
 </head>
 <body>
-<!--  <div id="response">
-<pre></pre>
-</div>
-<form id="vastauslomake">
 
-<input type="submit" id="submit" value="Submit"/><br/>
-</form> -->
 <div ng-app="myApp" ng-controller="myCtrl">
 
 <form  name="lomake"  ng-submit="submitForm()" >
 
-  <div  class="form-group " ng-repeat="kysymys in myWelcome" >
+  <div  class="form-group " ng-repeat="(index, kysymys) in myWelcome" >
   
-    <label >{{ kysymys.id }}. {{ kysymys.kysymys }}</label>
+    <label ng-cloak>{{ kysymys.id }}. {{ kysymys.kysymys }}</label>
     <br/>
-    <input type="text" class="form-control" name="{{ kysymys.id }}" />
+    <input type="text" class="form-control" name="kys_{{$index}}" ng-model="vastaukset[kysymys.id]" required/>
+    <button ng-click="removeQuestion(kysymys._id)">-</button>
     <br/>
-    <p class="help-block" ng-show="userForm.email.$invalid">Valid Email Address Required</p>
+    <p class="help-block" ng-show="lomake['kys_' + $index].$touched && lomake['kys_' + $index].$invalid" >Kenttä ei saa olla tyhjä</p>
+ 
   </div>
-	<button type="submit" class="btn btn-primary">Submit</button>
+	<button type="submit" class="btn btn-primary" ng-disabled="lomake.$invalid">Submit</button>
+</form>
+
+<form  name="lisaakysymys"  ng-submit="addQuestion()" >
+
+  <div  class="form-group ">
+  
+    <label >Lisää uusi kysymys</label>
+    <br/>
+    <input type="text" class="form-control" name="uusikysymys" ng-model="kysymys" required/>
+    <br/>
+    <p class="help-block" ng-show="lisaakysymys.uusikysymys.$touched && lisaakysymys.uusikysymys.$invalid">Kysymys ei saa olla tyhjä</p>
+ 	
+  </div>
+	<button type="submit" class="btn btn-primary" ng-disabled="lisaakysymys.$invalid">Submit</button>
 </form>
 
 </div>
 
 <script>
 var app = angular.module('myApp', []);
-app.controller('myCtrl', function($scope, $http) {
-  $http.get("kysymykset.JSON")
+app.controller('myCtrl', function($scope, $http,$window) {
+
+  $http.get("get.json")
   .then(function(response) {
       $scope.myWelcome = response.data;
+      console.log(response.data);
+      
   });
+
+  $scope.vastaukset = {};
+
   $scope.submitForm=function(){
-   
-      var data=$scope.vastaus;  
-      console.log(data);
+
+      var data=$scope.vastaukset;  
+   		console.log(data);
+      var vastaukset=[];
+      for(var i in data ){
+			vastaukset.push({ id: i, vastaus: data[i] });  	
+      }
+      console.log(vastaukset);
+      
       /* post to server*/
-      $http.post('talletavastaus', data);        
-  }
+      $http.post('tallenna', JSON.stringify(vastaukset),{
+                headers : {
+                    'Content-Type': 'application/json'
+                }}).success(function(response) {
+      				 	$window.location.reload();
+      
+  						});
+  				       
+  	};
+  $scope.addQuestion = function(){
+  	console.log($scope.kysymys);
+  	$http.post('tallennakysymys', JSON.stringify({kysymys: $scope.kysymys}),{
+         headers : {
+                    'Content-Type': 'application/json'
+                }}).success(function(response) {
+      						$window.location.reload();
+      						//alert('Thank you…!');
+  						});
+  			
+  
+
+  };
+  $scope.removeQuestion=function(questionID){
+  
+  	$http.post('poistakysymys', JSON.stringify({kysymys_id: questionID }),{
+         headers : {
+                    'Content-Type': 'application/json'
+                }}).success(function(response) {
+      						$window.location.reload();
+      						//alert('Thank you…!');
+  						});
+  };
 });
 
 </script>

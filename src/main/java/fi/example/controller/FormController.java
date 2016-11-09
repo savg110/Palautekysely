@@ -32,29 +32,26 @@ public class FormController {
 	@Autowired
 	VastausCRUDRepo vasrepo;
 	
-	@GetMapping("kysymykset.JSON")
+	@GetMapping("get.json")
 	public List<Kysymys> haeKysymyksetJSON() {
 		System.out.println(kysrepo.findAll());
 		 return (List<Kysymys>) kysrepo.findAll();
 	}
-	@PostMapping("talletavastaus")
-	public ResponseEntity tallenna(@Validated @RequestBody List<Vastaus> vastauslista, Errors errors) { 
-		System.out.println(errors);
-		if (errors.hasErrors()) {
+	@PostMapping("tallenna")
+	public String tallenna( @RequestBody List<Vastaus> vastauslista) { 
+		
 			
-	        }
-			
-			System.out.println(vastauslista);
+			System.out.println("vastausta tuli: "+vastauslista);
 			for (Vastaus vastaus : vastauslista){
-			vasrepo.save(vastaus);
-			Kysymys kys = kysrepo.findOne(vastaus.getId());
-			vastaus.setId(0L);
-			vasrepo.save(vastaus);
-			kys.getVastauslista().add(vastaus);
-			kysrepo.save(kys);
+				
+				Kysymys kys = kysrepo.findOne(vastaus.getId());
+				vastaus.setId(0L);
+				vasrepo.save(vastaus);
+				kys.getVastauslista().add(vastaus);
+				kysrepo.save(kys);
 			}
 			
-			return ResponseEntity.ok(vastauslista);
+			return "200";
 		}
 	
 	
