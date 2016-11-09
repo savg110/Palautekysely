@@ -16,8 +16,8 @@ Haaga-Helian ohjelmistoprojekti-kurssilla toteutettavan Palautekyselylomakkeen b
 
 ### Spring boot
 
-Rest rajapinta on pystyssä ja kuuntelee get-pyyntöja osoitteessa '/'. Kun sovellus käynnistyy, Commandlinerunner luo 3 kysymystä H2-tietokantaan, jotka ohjelma sitten hakee ja tulostaa. Vastaus ei vielä toimi. 
+Rest rajapinta on pystyssä ja kuuntelee get-pyyntöja osoitteessa '/'. Kun sovellus käynnistyy, Commandlinerunner luo 3 kysymystä H2-tietokantaan, jotka ohjelma sitten hakee ja tulostaa. Vastaus toimii ja tallentaa tiedot kantaan. Uuden kysymyksen luonti ei toimi, eikä kysymyksen poisto. 
 
 ### Todo next
 
-rakentaa vastauslogiikka. rakentaa kysymysten poistologiikka.  
+rakentaa kysymyksen luontilogiikka. rakentaa kysymysten poistologiikka.  
