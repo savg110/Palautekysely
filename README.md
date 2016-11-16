@@ -1,5 +1,6 @@
-# Palautekysely
-Ohjelmistoprojekti I SWD4TN022
+# Work in progress
+
+Haaga-Helian ohjelmistoprojekti-kurssilla toteutettavan Palautekyselylomakkeen back end. 
 
 ## Rajapinnan kautta voi ainakin
 * Lisätä feedback-kyselyn, jossa on kysymyksiä. Kysymykset voivat olla (prioriteettijärjestyksessä) tyyppiä skaala 1-5, multiple choice, checkbox, avoin teksti. Kysymykset voivat olla vapaaehtoisia tai pakollisia
@@ -11,25 +12,12 @@ Ohjelmistoprojekti I SWD4TN022
 * Kyselyn muokkaus ja siihen liittyvä autentikointi (vain kyselyn luoja voi muokata)
 * Digiprojekti 1 -kurssilta esitetään lisätoiveita ja muutostarpeita kurssin edetessä
 
-## MVP
+## Toteutettu tähän mennessä
 
-### Syöte
-* Web-sivu
+### Spring boot
 
-### Mitä käyttäjä haluaa tehdä
-* Vastata kyselyyn
-* Saada palautteen
+Rest rajapinta on pystyssä ja kuuntelee get-pyyntöja osoitteessa '/'. Kun sovellus käynnistyy, Commandlinerunner luo 3 kysymystä H2-tietokantaan, jotka ohjelma sitten hakee ja tulostaa. Vastaus toimii ja tallentaa tiedot kantaan. Uuden kysymyksen luonti ei toimi, eikä kysymyksen poisto. 
 
-### Kyselyn vaihtoehtojen tyypit
-* monivalinta
-* checkbox
-* avoin teksti
-* vapaaehtoinen
-* pakollinen
-* prioriteetti
+### Todo next
 
-### Näkymä
-* ~~Kirjautuminen~~
-* Lomake
-* Lähetysnappi
-* Palaute käyttäjälle
+rakentaa kysymyksen luontilogiikka. rakentaa kysymysten poistologiikka.  

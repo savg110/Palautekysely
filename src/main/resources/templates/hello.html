@@ -1,0 +1,94 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" xmlns:th="http://www.thymeleaf.org"
+      xmlns:sec="http://www.thymeleaf.org/thymeleaf-extras-springsecurity3">
+      <script src="http://d3js.org/d3.v3.min.js"></script>
+      <script src="http://code.jquery.com/jquery-1.7.2.min.js"></script>
+      <style>
+
+#chart {
+  background: #fff;
+  font-family: "Helvetica Neue", Helvetica, Arial, sans-serif;
+}
+
+.title {
+    font-weight: bold;
+    font-size: 24px;
+    text-align: center;
+    margin-top: 6px;
+    margin-bottom: 6px;
+}
+text {
+  pointer-events: none;
+}
+
+.grandparent text {
+  font-weight: bold;
+}
+
+rect {
+  fill: none;
+  stroke: #fff;
+}
+
+rect.parent,
+.grandparent rect {
+  stroke-width: 2px;
+}
+
+rect.parent {
+    pointer-events: none;
+}
+
+.grandparent rect {
+  fill: orange;
+}
+
+.grandparent:hover rect {
+  fill: #ee9700;
+}
+
+.children rect.parent,
+.grandparent rect {
+  cursor: pointer;
+}
+
+.children rect.parent {
+  fill: #bbb;
+  fill-opacity: .5;
+}
+
+.children:hover rect.child {
+  fill: #bbb;
+}
+
+</style>
+    <head>
+        <title>Sulkapalloa</title>
+    </head>
+   
+    <body>
+        <h1 th:inline="text">Tervetuloa [[${#httpServletRequest.remoteUser}]].</h1>
+ 
+
+		<form action="#" th:action="@{vastaa}" th:object="${vastaus}" method="post">
+            <table>
+            	<tr>
+            		<th>Lisää uusi peli</th>
+            	</tr>
+             
+                <tr th:each="kysymys : ${kysymykset}">
+        			<td th:text="${kysymys.id}">1</td>
+        			<td><a href="#" th:text="${kysymys.kysymys}">Title ...</a></td>
+        			<td><input type="text" th:field="*{vastaus}" /></td>
+                    <td th:if="${#fields.hasErrors('vastaus')}" th:errors="*{vastaus}">Nimivirhe</td>
+   				 </tr>
+               
+                <tr>
+                    <td><button type="submit">Tallenna</button></td>
+                </tr>
+            </table>
+        </form>
+   
+       
+     </body>
+     </html>
