@@ -19,6 +19,8 @@ public class Kysymys implements Serializable{
 	@Column(name="KYS_ID")
     private Long id;
     private String kysymys;
+	private boolean enabled;
+	private String tyyppi;
 	@ManyToMany(fetch=FetchType.LAZY)
     private List<Vastaus> vastauslista;
 
@@ -26,10 +28,12 @@ public class Kysymys implements Serializable{
 
     public Kysymys(String kysymys) {
         this.kysymys = kysymys;
+        this.enabled = true;
         this.vastauslista = new ArrayList<Vastaus>();
     }
     public Kysymys(String kysymys, List<Vastaus> vastauslista) {
         this.kysymys = kysymys;
+        this.enabled = true;
         this.vastauslista= vastauslista;
     }
     
@@ -42,6 +46,22 @@ public class Kysymys implements Serializable{
 	}
 	
 	
+	public boolean isEnabled() {
+		return enabled;
+	}
+
+	public void setEnabled(boolean enabled) {
+		this.enabled = enabled;
+	}
+
+	public String getTyyppi() {
+		return tyyppi;
+	}
+
+	public void setTyyppi(String tyyppi) {
+		this.tyyppi = tyyppi;
+	}
+
 	public List<Vastaus> getVastauslista() {
 		return vastauslista;
 	}

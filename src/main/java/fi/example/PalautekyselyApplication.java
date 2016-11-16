@@ -34,8 +34,10 @@ public class PalautekyselyApplication {
 			Kysymys kysymys = new Kysymys("Toimiiko?");
 			Kysymys kysymys2 = new Kysymys("Uuusi Kysymys?");
 			Kysymys kysymys3 = new Kysymys("Kolmas kysymys?");
+			//kysymys3.setEnabled(false);
 			//liitetään vastaus 1 kysymys3:een
 			kysymys3.getVastauslista().add(vastaus);
+			kysymys3.setTyyppi("radio");
 			//liitetään vastaus 1 kysymys 1:een
 			kysymys.getVastauslista().add(vastaus);
 			//etsitään vastaus 2
@@ -43,6 +45,7 @@ public class PalautekyselyApplication {
 			//tallennetaan vastaus 2 kysymys 2:een
 			kysymys2.getVastauslista().add(vastaus);
 			//tallennetaan kysymys2 tietokantaan
+			kysymys2.setTyyppi("checkbox");
 			repository.save(kysymys2);
 			//liitetään vastaus 2 kysymys 1:een
 			kysymys.getVastauslista().add(vastaus);

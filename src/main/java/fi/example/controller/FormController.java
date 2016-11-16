@@ -53,26 +53,20 @@ public class FormController {
 			
 			return "200";
 		}
-	
-	
-	/*
-	
-    @GetMapping("/")
-    public String lataa(Model model) {
-        model.addAttribute("kysymykset",kysrepo.findAll());
-        model.addAttribute("vastaus",new Vastaus());
-        return "hello";
-    }
-    @PostMapping("/vastaa")
-    public String vastausTallennus(@Valid Vastaus vastaus,BindingResult result) {
-    	if (result.hasErrors()) {
-			System.out.println(result);
-			return "redirect:/";
-		}
-		else{
-			System.out.println(result);
-			return "redirect:/";
-		}
-    }*/
-    
+	@PostMapping("poistakysymys")
+	public String poistakysymys( @RequestBody long id ) {
+		System.out.println("poistettavan id: "+id);
+		
+		// tähän jotain joka toimii
+		kysrepo.delete(id);
+		
+		return "200";
+	}
+	@PostMapping("lisaakysymys")
+	public String lisaakysymys( @RequestBody Kysymys kysymys ) {
+
+		kysrepo.save(kysymys);
+		
+		return "200";
+	}
 }
