@@ -57,8 +57,8 @@
   
     <label ng-cloak>{{ kysymys.id }}. {{ kysymys.kysymys }}</label>
     <br/>
-    <input type="text" class="form-control" name="kys_{{$index}}" ng-model="vastaukset[kysymys.id]" required/>
-    <button ng-click="removeQuestion(kysymys._id)">-</button>
+    <input type="text" type="{{kysymys.tyyppi}}" class="form-control" name="kys_{{$index}}" ng-model="vastaukset[kysymys.id]" required/>
+    <button ng-click="removeQuestion(kysymys.id)">-</button>
     <br/>
     <p class="help-block" ng-show="lomake['kys_' + $index].$touched && lomake['kys_' + $index].$invalid" >Kenttä ei saa olla tyhjä</p>
  
@@ -117,7 +117,7 @@ app.controller('myCtrl', function($scope, $http,$window) {
   	};
   $scope.addQuestion = function(){
   	console.log($scope.kysymys);
-  	$http.post('tallennakysymys', JSON.stringify({kysymys: $scope.kysymys}),{
+  	$http.post('lisaakysymys', JSON.stringify({kysymys: $scope.kysymys}),{
          headers : {
                     'Content-Type': 'application/json'
                 }}).success(function(response) {
@@ -130,7 +130,7 @@ app.controller('myCtrl', function($scope, $http,$window) {
   };
   $scope.removeQuestion=function(questionID){
   
-  	$http.post('poistakysymys', JSON.stringify({kysymys_id: questionID }),{
+  	$http.post('poistakysymys', JSON.stringify(questionID),{
          headers : {
                     'Content-Type': 'application/json'
                 }}).success(function(response) {
