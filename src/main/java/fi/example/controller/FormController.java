@@ -1,5 +1,6 @@
 package fi.example.controller;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import javax.validation.Valid;
@@ -12,6 +13,7 @@ import org.springframework.validation.BindingResult;
 import org.springframework.validation.Errors;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.GetMapping;
+import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -37,6 +39,13 @@ public class FormController {
 		System.out.println(kysrepo.findAll());
 		 return (List<Kysymys>) kysrepo.findAll();
 	}
+	@GetMapping("{id}")
+	public Kysymys Kysymys( @PathVariable long id) {	
+		Kysymys kys =  kysrepo.findOne(id);
+		List<Vastaus> lista = new ArrayList<Vastaus>();
+		kys.setVastauslista(lista);
+		return kys;
+	}
 	@PostMapping("tallenna")
 	public String tallenna( @RequestBody List<Vastaus> vastauslista) { 
 		
@@ -57,7 +66,6 @@ public class FormController {
 	public String poistakysymys( @RequestBody long id ) {
 		System.out.println("poistettavan id: "+id);
 		
-		// tähän jotain joka toimii
 		kysrepo.delete(id);
 		
 		return "200";

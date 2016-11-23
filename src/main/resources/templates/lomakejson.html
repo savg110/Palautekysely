@@ -55,7 +55,7 @@
 
   <div  class="form-group " ng-repeat="(index, kysymys) in myWelcome" >
   
-    <label ng-cloak>{{ kysymys.id }}. {{ kysymys.kysymys }}</label>
+    <label ng-cloak>{{$index+1}}. {{ kysymys.kysymys }}</label>
     <br/>
     <input type="text" type="{{kysymys.tyyppi}}" class="form-control" name="kys_{{$index}}" ng-model="vastaukset[kysymys.id]" required/>
     <button ng-click="removeQuestion(kysymys.id)">-</button>

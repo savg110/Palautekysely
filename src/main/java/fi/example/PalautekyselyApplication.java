@@ -8,6 +8,7 @@ import org.springframework.context.support.ReloadableResourceBundleMessageSource
 
 import fi.example.entity.Kysymys;
 import fi.example.entity.KysymysCRUDRepo;
+import fi.example.entity.Tyyppi;
 import fi.example.entity.Vastaus;
 import fi.example.entity.VastausCRUDRepo;
 
@@ -37,7 +38,7 @@ public class PalautekyselyApplication {
 			//kysymys3.setEnabled(false);
 			//liitetään vastaus 1 kysymys3:een
 			kysymys3.getVastauslista().add(vastaus);
-			kysymys3.setTyyppi("radio");
+			//kysymys3.setTyyppi("radio");
 			//liitetään vastaus 1 kysymys 1:een
 			kysymys.getVastauslista().add(vastaus);
 			//etsitään vastaus 2
@@ -45,7 +46,13 @@ public class PalautekyselyApplication {
 			//tallennetaan vastaus 2 kysymys 2:een
 			kysymys2.getVastauslista().add(vastaus);
 			//tallennetaan kysymys2 tietokantaan
-			kysymys2.setTyyppi("checkbox");
+			String[] jeejjee={"hyvin","huonosti","vähän","paljon"};
+			Tyyppi tyyppi2 = new Tyyppi(); 
+			Tyyppi tyyppi3 = new Tyyppi(); 
+			kysymys.setTyyppi(tyyppi2);
+			kysymys3.setTyyppi(tyyppi3);
+			Tyyppi tyyppi1= new Tyyppi("radio",jeejjee);
+			kysymys2.setTyyppi(tyyppi1);
 			repository.save(kysymys2);
 			//liitetään vastaus 2 kysymys 1:een
 			kysymys.getVastauslista().add(vastaus);

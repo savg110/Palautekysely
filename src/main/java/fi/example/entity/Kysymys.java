@@ -20,7 +20,8 @@ public class Kysymys implements Serializable{
     private Long id;
     private String kysymys;
 	private boolean enabled;
-	private String tyyppi;
+	@OneToOne(cascade = CascadeType.ALL)
+	private Tyyppi tyyppi;
 	@ManyToMany(fetch=FetchType.LAZY)
     private List<Vastaus> vastauslista;
 
@@ -54,13 +55,6 @@ public class Kysymys implements Serializable{
 		this.enabled = enabled;
 	}
 
-	public String getTyyppi() {
-		return tyyppi;
-	}
-
-	public void setTyyppi(String tyyppi) {
-		this.tyyppi = tyyppi;
-	}
 
 	public List<Vastaus> getVastauslista() {
 		return vastauslista;
@@ -80,7 +74,15 @@ public class Kysymys implements Serializable{
 	}
 
 
-    @Override
+    public Tyyppi getTyyppi() {
+		return tyyppi;
+	}
+
+	public void setTyyppi(Tyyppi tyyppi) {
+		this.tyyppi = tyyppi;
+	}
+
+	@Override
     public String toString() {
         return String.format(
                 "Kysymys[id=%d, kysymys='%s', lista='%s']",
