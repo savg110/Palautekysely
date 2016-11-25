@@ -55,9 +55,21 @@
 
   <div  class="form-group " ng-repeat="(index, kysymys) in myWelcome" >
   
-    <label ng-cloak>{{$index+1}}. {{ kysymys.kysymys }}</label>
+    <label ng-cloak>{{kysymys.id}}. {{ kysymys.kysymys }}</label>
     <br/>
-    <input type="text" type="{{kysymys.tyyppi}}" class="form-control" name="kys_{{$index}}" ng-model="vastaukset[kysymys.id]" required/>
+   <div ng-if="kysymys.tyyppi.tyyppi=='radio'"  ng-repeat="(i, vaihtoehto) in kysymys.tyyppi.vaihtoehdot track by i"> 
+    	<input type="{{kysymys.tyyppi.tyyppi}}" class="form-control" name="kys_{{$index}}" value="{{vaihtoehto}}" ng-model="vastaukset[kysymys.id]" required >
+    		{{vaihtoehto}}
+    	</input>
+    </div>
+    <div ng-if="kysymys.tyyppi.tyyppi=='text'">
+    	<input type="{{kysymys.tyyppi.tyyppi}}" class="form-control" name="kys_{{$index}}" ng-model="vastaukset[kysymys.id]" required >
+    </div>
+    <div ng-if="kysymys.tyyppi.tyyppi=='checkbox'"  ng-repeat="(i, vaihtoehto) in kysymys.tyyppi.vaihtoehdot track by i">
+    	<input type="{{kysymys.tyyppi.tyyppi}}" class="form-control" name="kys_{{$i}}" ng-model="vastaukset[kysymys.id][i]" ng-true-value="'{{vaihtoehto}}'" ng-required="value.length==0">
+    	{{vaihtoehto}}
+    	</input>
+    </div>
     <button ng-click="removeQuestion(kysymys.id)">-</button>
     <br/>
     <p class="help-block" ng-show="lomake['kys_' + $index].$touched && lomake['kys_' + $index].$invalid" >Kenttä ei saa olla tyhjä</p>
@@ -73,6 +85,17 @@
     <label >Lisää uusi kysymys</label>
     <br/>
     <input type="text" class="form-control" name="uusikysymys" ng-model="kysymys" required/>
+    <select ng-model="tyyppi" required>
+ 		<option selected="selected" value="text">text</option>
+ 		<option value="radio">radio</option>
+		<option value="checkbox">checkbox</option>
+	</select>
+	<div ng-if="tyyppi=='radio' || tyyppi=='checkbox'">
+	<input type="text" class="form-control" name="uusikysymys" ng-model="vaihtoehdot[0]" required placeholder="vastausvaihtoedot..."/>
+	<input type="text" class="form-control" name="uusikysymys" ng-model="vaihtoehdot[1]" required placeholder="pakollinen..."/>
+	<input type="text" class="form-control" name="uusikysymys" ng-model="vaihtoehdot[2]" value="" placeholder="vapaaehtoinen.."/>
+	<input type="text" class="form-control" name="uusikysymys" ng-model="vaihtoehdot[3]" value="" placeholder="vapaaehtoinen.."/>
+  	</div>
     <br/>
     <p class="help-block" ng-show="lisaakysymys.uusikysymys.$touched && lisaakysymys.uusikysymys.$invalid">Kysymys ei saa olla tyhjä</p>
  	
@@ -101,7 +124,16 @@ app.controller('myCtrl', function($scope, $http,$window) {
    		console.log(data);
       var vastaukset=[];
       for(var i in data ){
-			vastaukset.push({ id: i, vastaus: data[i] });  	
+    	  	if (Object.prototype.toString.call( data[i] ) === '[object Object]'){
+    	  		var str="";
+    	  		for (var d in data[i]){    	  			
+    	  			str+=data[i][d]+",";
+    	  			console.log(str);
+    	  		}
+    	  		vastaukset.push({ id: i, vastaus: str });
+    	  	}else{
+			vastaukset.push({ id: i, vastaus: data[i] });
+    	  	}
       }
       console.log(vastaukset);
       
@@ -115,9 +147,19 @@ app.controller('myCtrl', function($scope, $http,$window) {
   						});
   				       
   	};
+  	$scope.vaihtoehdot=[];
   $scope.addQuestion = function(){
-  	console.log($scope.kysymys);
-  	$http.post('lisaakysymys', JSON.stringify({kysymys: $scope.kysymys}),{
+	  console.log($scope.vaihtoehdot)
+  	$.each($scope.vaihtoehdot, function (index, value){
+  		console.log($scope.vaihtoehdot[index])
+  		if ($scope.vaihtoehdot[index] == null){
+  			$scope.vaihtoehdot.splice(index, 1);
+  		}
+  	});
+
+  	palaute={kysymys: $scope.kysymys, tyyppi: { tyyppi: $scope.tyyppi, vaihtoehdot:$scope.vaihtoehdot }}
+  	console.log(palaute);
+  	$http.post('lisaakysymys', JSON.stringify(palaute),{
          headers : {
                     'Content-Type': 'application/json'
                 }}).success(function(response) {

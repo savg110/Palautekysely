@@ -40,7 +40,7 @@ public class FormController {
 		 return (List<Kysymys>) kysrepo.findAll();
 	}
 	@GetMapping("{id}")
-	public Kysymys Kysymys( @PathVariable long id) {	
+	public Kysymys kysymys( @PathVariable long id) {	
 		Kysymys kys =  kysrepo.findOne(id);
 		List<Vastaus> lista = new ArrayList<Vastaus>();
 		kys.setVastauslista(lista);
@@ -48,11 +48,8 @@ public class FormController {
 	}
 	@PostMapping("tallenna")
 	public String tallenna( @RequestBody List<Vastaus> vastauslista) { 
-		
-			
 			System.out.println("vastausta tuli: "+vastauslista);
 			for (Vastaus vastaus : vastauslista){
-				
 				Kysymys kys = kysrepo.findOne(vastaus.getId());
 				vastaus.setId(0L);
 				vasrepo.save(vastaus);

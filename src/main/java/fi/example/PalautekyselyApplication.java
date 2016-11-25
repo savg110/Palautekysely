@@ -47,7 +47,7 @@ public class PalautekyselyApplication {
 			kysymys2.getVastauslista().add(vastaus);
 			//tallennetaan kysymys2 tietokantaan
 			String[] jeejjee={"hyvin","huonosti","vähän","paljon"};
-			Tyyppi tyyppi2 = new Tyyppi(); 
+			Tyyppi tyyppi2 = new Tyyppi("checkbox",jeejjee); 
 			Tyyppi tyyppi3 = new Tyyppi(); 
 			kysymys.setTyyppi(tyyppi2);
 			kysymys3.setTyyppi(tyyppi3);

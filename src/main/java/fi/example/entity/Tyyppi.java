@@ -23,8 +23,7 @@ public class Tyyppi implements Serializable {
 	
 
 	public Tyyppi(){
-		this.tyyppi="text";
-		
+		this.tyyppi="text";	
 	}
 	public Tyyppi(String tyyppi, String[] vaihtoehdot){
 		this.tyyppi=tyyppi;

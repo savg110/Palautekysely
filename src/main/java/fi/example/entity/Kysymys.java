@@ -31,11 +31,19 @@ public class Kysymys implements Serializable{
         this.kysymys = kysymys;
         this.enabled = true;
         this.vastauslista = new ArrayList<Vastaus>();
+        this.setTyyppi(new Tyyppi());
+    }
+    public Kysymys(String kysymys, String tyyppistring, String[] vaihtoehdot) {
+        this.kysymys = kysymys;
+        this.enabled = true;
+        this.vastauslista = new ArrayList<Vastaus>();
+        this.tyyppi= new Tyyppi(tyyppistring, vaihtoehdot);
     }
     public Kysymys(String kysymys, List<Vastaus> vastauslista) {
         this.kysymys = kysymys;
         this.enabled = true;
         this.vastauslista= vastauslista;
+        this.setTyyppi(new Tyyppi());
     }
     
     public Long getId() {
@@ -83,12 +91,9 @@ public class Kysymys implements Serializable{
 	}
 
 	@Override
-    public String toString() {
-        return String.format(
-                "Kysymys[id=%d, kysymys='%s', lista='%s']",
-                id, kysymys,vastauslista);
-    }
-
-
-
+	public String toString() {
+		return "Kysymys [id=" + id + ", kysymys=" + kysymys + ", enabled=" + enabled + ", tyyppi=" + tyyppi
+				+ ", vastauslista=" + vastauslista + "]";
+	}
+  
 }
