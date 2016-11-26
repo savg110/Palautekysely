@@ -51,9 +51,16 @@
 
 <div ng-app="myApp" ng-controller="myCtrl">
 
-<form  name="lomake"  ng-submit="submitForm()" >
 
-  <div  class="form-group " ng-repeat="(index, kysymys) in myWelcome" >
+<div> 
+	 <h3>Valitse kysely?</h1>
+	 <select ng-model="kyselyalku">
+ 		<option ng-repeat="(index, kyselyalku) in myWelcome"  value="{{kyselyalku.id}}">{{kyselyalku.nimi}}</option>
+	</select>
+</div>
+<form name="lomake"  ng-submit="submitForm()" >
+
+  <div  class="form-group " ng-repeat="(index, kysymys) in myWelcome[kyselyalku-1].kysymyslista" >
   
     <label ng-cloak>{{kysymys.id}}. {{ kysymys.kysymys }}</label>
     <br/>
@@ -73,9 +80,8 @@
     <button ng-click="removeQuestion(kysymys.id)">-</button>
     <br/>
     <p class="help-block" ng-show="lomake['kys_' + $index].$touched && lomake['kys_' + $index].$invalid" >Kenttä ei saa olla tyhjä</p>
- 
   </div>
-	<button type="submit" class="btn btn-primary" ng-disabled="lomake.$invalid">Submit</button>
+	<button type="submit" class="btn btn-primary" ng-disabled="lomake.$invalid" >Submit</button>
 </form>
 
 <form  name="lisaakysymys"  ng-submit="addQuestion()" >
@@ -90,6 +96,9 @@
  		<option value="radio">radio</option>
 		<option value="checkbox">checkbox</option>
 	</select>
+	 <select ng-model="kysely" required>
+ 		<option ng-repeat="(index, kysely) in myWelcome" value="{{kysely.id}}">{{kysely.nimi}}</option>
+	</select>
 	<div ng-if="tyyppi=='radio' || tyyppi=='checkbox'">
 	<input type="text" class="form-control" name="uusikysymys" ng-model="vaihtoehdot[0]" required placeholder="vastausvaihtoedot..."/>
 	<input type="text" class="form-control" name="uusikysymys" ng-model="vaihtoehdot[1]" required placeholder="pakollinen..."/>
@@ -103,13 +112,29 @@
 	<button type="submit" class="btn btn-primary" ng-disabled="lisaakysymys.$invalid">Submit</button>
 </form>
 
+<form  name="lisaakysely"  ng-submit="lisaaKysely()" >
+
+  <div  class="form-group ">
+  
+    <label >Lisää uusi kysely</label>
+    <br/>
+    <input type="text" class="form-control" name="nimi" ng-model="uusikysely[0]" required/>
+    <textarea  class="form-control" name="info" ng-model="uusikysely[1]" required/>
+   
+    <p class="help-block" ng-show="lisaakysely.nimi.$touched && lisaakysymys.nimi.$invalid">Kyselyn nimi ei saa olla tyhjä</p>
+ 	
+  </div>
+	<button type="submit" class="btn btn-primary" ng-disabled="lisaakysely.$invalid">Submit</button>
+</form>
+
+
 </div>
 
 <script>
 var app = angular.module('myApp', []);
 app.controller('myCtrl', function($scope, $http,$window) {
 
-  $http.get("get.json")
+  $http.get("kyselylista")
   .then(function(response) {
       $scope.myWelcome = response.data;
       console.log(response.data);
@@ -130,6 +155,7 @@ app.controller('myCtrl', function($scope, $http,$window) {
     	  			str+=data[i][d]+",";
     	  			console.log(str);
     	  		}
+    	  		str = str.slice(0, -1);
     	  		vastaukset.push({ id: i, vastaus: str });
     	  	}else{
 			vastaukset.push({ id: i, vastaus: data[i] });
@@ -147,18 +173,19 @@ app.controller('myCtrl', function($scope, $http,$window) {
   						});
   				       
   	};
+  	$scope.kysely;
   	$scope.vaihtoehdot=[];
   $scope.addQuestion = function(){
-	  console.log($scope.vaihtoehdot)
+	//  console.log($scope.vaihtoehdot)
   	$.each($scope.vaihtoehdot, function (index, value){
-  		console.log($scope.vaihtoehdot[index])
+  		//console.log($scope.vaihtoehdot[index])
   		if ($scope.vaihtoehdot[index] == null){
   			$scope.vaihtoehdot.splice(index, 1);
   		}
   	});
-
-  	palaute={kysymys: $scope.kysymys, tyyppi: { tyyppi: $scope.tyyppi, vaihtoehdot:$scope.vaihtoehdot }}
-  	console.log(palaute);
+	
+  	palaute=[{id: $scope.kysely, kysymys: $scope.kysymys },{ kysymys: $scope.kysymys, tyyppi: { tyyppi: $scope.tyyppi, vaihtoehdot:$scope.vaihtoehdot }}];
+  	//console.log(palaute);
   	$http.post('lisaakysymys', JSON.stringify(palaute),{
          headers : {
                     'Content-Type': 'application/json'
@@ -170,6 +197,17 @@ app.controller('myCtrl', function($scope, $http,$window) {
   
 
   };
+  $scope.uusikysely
+  $scope.lisaaKysely=function(){
+	    //console.log($scope.uusikysely);
+	  	$http.post('lisaakysely', JSON.stringify({ nimi: $scope.uusikysely[0], info: $scope.uusikysely[0] }),{
+	         headers : {
+	                    'Content-Type': 'application/json'
+	                }}).success(function(response) {
+	      						$window.location.reload();
+	      						//alert('Thank you…!');
+	  						});
+	  };
   $scope.removeQuestion=function(questionID){
   
   	$http.post('poistakysymys', JSON.stringify(questionID),{

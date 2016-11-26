@@ -19,6 +19,8 @@ import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.ResponseBody;
 import org.springframework.web.bind.annotation.RestController;
 
+import fi.example.entity.Kysely;
+import fi.example.entity.KyselyCRUDRepo;
 import fi.example.entity.Kysymys;
 import fi.example.entity.KysymysCRUDRepo;
 import fi.example.entity.Vastaus;
@@ -33,45 +35,74 @@ public class FormController {
 	KysymysCRUDRepo kysrepo;
 	@Autowired
 	VastausCRUDRepo vasrepo;
+	@Autowired
+	KyselyCRUDRepo kyselyrepo;
 	
-	@GetMapping("get.json")
+	@GetMapping("kysymyslista")
 	public List<Kysymys> haeKysymyksetJSON() {
 		System.out.println(kysrepo.findAll());
 		 return (List<Kysymys>) kysrepo.findAll();
 	}
-	@GetMapping("{id}")
+	@GetMapping("kyselylista")
+	public List<Kysely> haeKyselytJSON() {
+		System.out.println(kyselyrepo.findAll());
+		 return (List<Kysely>) kyselyrepo.findAll();
+	}
+	@GetMapping("kysymys/{id}")
 	public Kysymys kysymys( @PathVariable long id) {	
 		Kysymys kys =  kysrepo.findOne(id);
 		List<Vastaus> lista = new ArrayList<Vastaus>();
 		kys.setVastauslista(lista);
 		return kys;
 	}
+	@GetMapping("kysely/{id}")
+	public Kysely Kysely( @PathVariable long id) {	
+		Kysely kysely =  kyselyrepo.findOne(id);
+		List<Kysymys> kysymyslista=kysely.getKysymyslista();
+		List<Vastaus> tyhjalista= new ArrayList<Vastaus>();
+		for (Kysymys kysymys : kysymyslista){
+			kysymys.setVastauslista(tyhjalista);
+		}
+		kysely.setKysymyslista(kysymyslista);
+		return kysely;
+	}
+	
 	@PostMapping("tallenna")
 	public String tallenna( @RequestBody List<Vastaus> vastauslista) { 
 			System.out.println("vastausta tuli: "+vastauslista);
 			for (Vastaus vastaus : vastauslista){
 				Kysymys kys = kysrepo.findOne(vastaus.getId());
-				vastaus.setId(0L);
-				vasrepo.save(vastaus);
+				vastaus.setId(0L);			
 				kys.getVastauslista().add(vastaus);
-				kysrepo.save(kys);
-			}
-			
+				vasrepo.save(vastaus);
+			}			
 			return "200";
 		}
 	@PostMapping("poistakysymys")
 	public String poistakysymys( @RequestBody long id ) {
 		System.out.println("poistettavan id: "+id);
-		
 		kysrepo.delete(id);
-		
 		return "200";
 	}
+	@PostMapping("poistavastaus")
+	public String poistavastaus( @RequestBody long id ) {
+		System.out.println("poistettavan id: "+id);
+		vasrepo.delete(id);
+		return "200";
+	}
+	
 	@PostMapping("lisaakysymys")
-	public String lisaakysymys( @RequestBody Kysymys kysymys ) {
-
-		kysrepo.save(kysymys);
-		
+	public String lisaakysymys( @RequestBody List<Kysymys> kysymys ) {
+			Kysely kysely = kyselyrepo.findOne(kysymys.get(0).getId());
+			kysely.getKysymyslista().add(kysymys.get(1));
+			
+			kysrepo.save(kysymys.get(1));
+						
+		return "200";
+	}
+	@PostMapping("lisaakysely")
+	public String lisaakysymys( @RequestBody Kysely kysely ) {
+		kyselyrepo.save(kysely);		
 		return "200";
 	}
 }

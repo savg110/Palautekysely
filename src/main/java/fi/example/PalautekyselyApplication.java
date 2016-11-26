@@ -1,16 +1,20 @@
 package fi.example;
 
+import java.util.ArrayList;
+
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.support.ReloadableResourceBundleMessageSource;
+
 
 import fi.example.entity.Kysymys;
 import fi.example.entity.KysymysCRUDRepo;
 import fi.example.entity.Tyyppi;
 import fi.example.entity.Vastaus;
 import fi.example.entity.VastausCRUDRepo;
+import fi.example.entity.Kysely;
+import fi.example.entity.KyselyCRUDRepo;
 
 @SpringBootApplication
 public class PalautekyselyApplication {
@@ -22,50 +26,61 @@ public class PalautekyselyApplication {
 	}
 
 	@Bean
-	public CommandLineRunner demo(KysymysCRUDRepo repository, VastausCRUDRepo vasrepo) {
+	public CommandLineRunner demo(KyselyCRUDRepo kyselyrepo, KysymysCRUDRepo repository, VastausCRUDRepo vasrepo) {
 		return (args) -> {
-			// save a couple of customers
+			
 			//tallennetaan 3 vastausta
-			vasrepo.save(new Vastaus("Vastaus___1"));
-			vasrepo.save(new Vastaus("Vastaus___2"));
-			vasrepo.save(new Vastaus("Vastaus3"));
-			//etsitään vastaus 1
-			Vastaus vastaus = vasrepo.findOne(1L);
+			
+			Kysely kysely1=new Kysely("ensimmäinen kysely","lisätiedot", new ArrayList<Kysymys>());
+			Kysely kysely2=new Kysely("toinen kysely","lisätiedot 2", new ArrayList<Kysymys>());
+			Vastaus vastaus1 = new Vastaus("Vastaus___1");
+			Vastaus vastaus2 = new Vastaus("Vastaus___2");
+			Vastaus vastaus3 = new Vastaus("Vastaus3");
+			Vastaus vastaus4 = new Vastaus("myöhemmin lisättävä vastaus");
+			
+
 			//luodaan 3 kysymystä
-			Kysymys kysymys = new Kysymys("Toimiiko?");
+			Kysymys kysymys1 = new Kysymys("Toimiiko?");
 			Kysymys kysymys2 = new Kysymys("Uuusi Kysymys?");
 			Kysymys kysymys3 = new Kysymys("Kolmas kysymys?");
-			//kysymys3.setEnabled(false);
+			
+			
+
 			//liitetään vastaus 1 kysymys3:een
-			kysymys3.getVastauslista().add(vastaus);
+			kysymys1.getVastauslista().add(vastaus1);
 			//kysymys3.setTyyppi("radio");
 			//liitetään vastaus 1 kysymys 1:een
-			kysymys.getVastauslista().add(vastaus);
-			//etsitään vastaus 2
-			vastaus = vasrepo.findOne(2L);
-			//tallennetaan vastaus 2 kysymys 2:een
-			kysymys2.getVastauslista().add(vastaus);
-			//tallennetaan kysymys2 tietokantaan
+			kysymys2.getVastauslista().add(vastaus2);
+
+			//tallennetaan vastaus 3 kysymys 3:een
+			kysymys3.getVastauslista().add(vastaus3);
+
+			
 			String[] jeejjee={"hyvin","huonosti","vähän","paljon"};
 			Tyyppi tyyppi2 = new Tyyppi("checkbox",jeejjee); 
 			Tyyppi tyyppi3 = new Tyyppi(); 
-			kysymys.setTyyppi(tyyppi2);
+			kysymys1.setTyyppi(tyyppi2);
+		
 			kysymys3.setTyyppi(tyyppi3);
 			Tyyppi tyyppi1= new Tyyppi("radio",jeejjee);
 			kysymys2.setTyyppi(tyyppi1);
-			repository.save(kysymys2);
-			//liitetään vastaus 2 kysymys 1:een
-			kysymys.getVastauslista().add(vastaus);
+			//liitetään vastaus 4 kysymys 1:een
+			kysymys1.getVastauslista().add(vastaus4);
 			//liitetään vastaus 2 kysymys 3:een
-			kysymys3.getVastauslista().add(vastaus);
+			kysymys3.getVastauslista().add(vastaus2);	
 			
-			repository.save(kysymys);
-
-
+			kysely1.getKysymyslista().add(kysymys1);
+			kysely2.getKysymyslista().add(kysymys2);
+			kysely2.getKysymyslista().add(kysymys3);
+			vasrepo.save(vastaus1);
+			vasrepo.save(vastaus2);
+			vasrepo.save(vastaus3);
+			vasrepo.save(vastaus4);
+			repository.save(kysymys1);
+			repository.save(kysymys2);
 			repository.save(kysymys3);
-			
-
-			
+			kyselyrepo.save(kysely1);
+			kyselyrepo.save(kysely2);
 		
 		};
 	

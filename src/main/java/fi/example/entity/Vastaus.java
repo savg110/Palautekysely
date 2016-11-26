@@ -15,12 +15,10 @@ public class Vastaus implements Serializable {
 	
 	@Id
 	@GeneratedValue(strategy=GenerationType.AUTO)
+	//@Column(name="VASTAUS_ID")
 	private long id;
-	@NotNull
 	@Size(min = 1, max = 30)
 	private String vastaus;
-	
-	//private long kysID;
 	
 	public Vastaus() {}
 	
@@ -41,13 +39,6 @@ public class Vastaus implements Serializable {
 		this.id = id;
 	}
 
-	/*public long getKysID() {
-		return kysID;
-	}
-
-	public void setKysID(long kysID) {
-		this.kysID = kysID;
-	}*/
 
 	public void setVastaus(String vastaus) {
 		this.vastaus = vastaus;
