@@ -14,9 +14,9 @@ Haaga-Helian ohjelmistoprojekti-kurssilla toteutettavan Palautekyselylomakkeen b
 
 ## Toteutettu tähän mennessä
 
-### Spring boot
+### Spring boot / H2 Database / angularJS 
 
-Rest rajapinta on pystyssä ja kuuntelee get-pyyntöja osoitteessa '/'. Kun sovellus käynnistyy, Commandlinerunner luo 3 kysymystä H2-tietokantaan, jotka ohjelma sitten hakee ja tulostaa. Uusien kyselyiden luonti toimii, kysymysten luonti ja poisto toimii. Vastaaminen toimii. Yhden kyselyn haku toimii, yhden kysymyksen haku toimii.
+Rest rajapinta on pystyssä ja kuuntelee get-pyyntöja osoitteessa '/'. Kun sovellus käynnistyy, Commandlinerunner luo 3 kysymystä H2-tietokantaan, jotka ohjelma sitten hakee ja tulostaa. Uusien kyselyiden luonti toimii, kysymysten luonti ja poisto toimii. Vastaaminen toimii. Kyselyn voi valita listalta ja frontti näyttää kysymykset. Muokkaus ei toimi. Paranneltu frontin visuaalista ilmettä.
 
 ### Todo next
 

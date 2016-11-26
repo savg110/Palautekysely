@@ -90,6 +90,12 @@ public class FormController {
 		vasrepo.delete(id);
 		return "200";
 	}
+	@PostMapping("poistakysely")
+	public String poistakysely( @RequestBody long id ) {
+		System.out.println("poistettavan id: "+id);
+		kyselyrepo.delete(id);
+		return "200";
+	}
 	
 	@PostMapping("lisaakysymys")
 	public String lisaakysymys( @RequestBody List<Kysymys> kysymys ) {
