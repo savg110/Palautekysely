@@ -1,4 +1,4 @@
-# Work in progress
+#Work in progress
 
 Haaga-Helian ohjelmistoprojekti-kurssilla toteutettavan Palautekyselylomakkeen back end. 
 
@@ -16,8 +16,8 @@ Haaga-Helian ohjelmistoprojekti-kurssilla toteutettavan Palautekyselylomakkeen b
 
 ### Spring boot
 
-Rest rajapinta on pystyssä ja kuuntelee get-pyyntöja osoitteessa '/'. Kun sovellus käynnistyy, Commandlinerunner luo 3 kysymystä H2-tietokantaan, jotka ohjelma sitten hakee ja tulostaa. Lomakkeen tallennus toimii. Uuden kysymyksen luonti toimii. Kysymyksen poisto toimii. Yhden kysymyksen haku toimii. Kaikkien kysymysten ja vastausten haku toimii. 
+Rest rajapinta on pystyssä ja kuuntelee get-pyyntöja osoitteessa '/'. Kun sovellus käynnistyy, Commandlinerunner luo 3 kysymystä H2-tietokantaan, jotka ohjelma sitten hakee ja tulostaa. Uusien kyselyiden luonti toimii, kysymysten luonti ja poisto toimii. Vastaaminen toimii. Yhden kyselyn haku toimii, yhden kysymyksen haku toimii.
 
 ### Todo next
 
-Rakentaa kysymyksen tyypin toiminnallisuus paremmaksi. Rakentaa mahdollisuus useampiin kyselyihin.  
+Rakentaa kysymyksen muokkaus ja mahdollisesti authentikointi.
