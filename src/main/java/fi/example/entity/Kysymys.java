@@ -16,35 +16,24 @@ public class Kysymys implements Serializable{
 	
 	@Id
     @GeneratedValue(strategy=GenerationType.AUTO)
-	//@Column(name="KYS_ID")
+	//@Column(name="KYSYMYS_ID")
     private Long id;
     private String kysymys;
 	private boolean enabled;
 	@OneToOne(cascade = CascadeType.ALL)
 	private Tyyppi tyyppi;
-	@ManyToMany(fetch=FetchType.LAZY)
+	//@ManyToMany(fetch=FetchType.LAZY)
+	@OneToMany
+	//@JoinColumn(name="VASTAUS_ID")
     private List<Vastaus> vastauslista;
+	//@ManyToOne(fetch = FetchType.LAZY)
+	//@JoinColumn(name = "KYSELY_ID")
+	//private Kysely kysely;
 
-
-	protected Kysymys() {
+	private Kysymys() {
 		super();
 	}
-
-    public Kysymys(String kysymys) {
-    	super();
-    	this.kysymys = kysymys;
-        this.enabled = true;
-        this.vastauslista = new ArrayList<Vastaus>();
-        this.setTyyppi(new Tyyppi());
-    }
-    public Kysymys(long id, String kysymys) {
-    	super();
-    	this.id=id;
-    	this.kysymys = kysymys;
-        this.enabled = true;
-        this.vastauslista = new ArrayList<Vastaus>();
-        this.setTyyppi(new Tyyppi());
-    }
+ 
 
     public Kysymys(String kysymys, String tyyppistring, String[] vaihtoehdot) {
     	super();
@@ -52,6 +41,7 @@ public class Kysymys implements Serializable{
         this.enabled = true;
         this.vastauslista = new ArrayList<Vastaus>();
         this.tyyppi= new Tyyppi(tyyppistring, vaihtoehdot);
+       // this.setKysely(kysely);
     }
     public Kysymys(String kysymys, List<Vastaus> vastauslista) {
         super();
@@ -59,6 +49,7 @@ public class Kysymys implements Serializable{
         this.enabled = true;
         this.vastauslista= vastauslista;
         this.setTyyppi(new Tyyppi());
+    //    this.setKysely(kysely);
     }
     public Kysymys(String kysymys, boolean enabled, Tyyppi tyyppi, List<Vastaus> vastauslista) {
 		super();
@@ -66,18 +57,20 @@ public class Kysymys implements Serializable{
 		this.enabled = enabled;
 		this.tyyppi = tyyppi;
 		this.vastauslista = vastauslista;
-	}
-    public Kysymys(long id,String kysymys, Tyyppi tyyppi) {
-		super();
-		this.id=id;
-		this.kysymys = kysymys;
-		this.enabled = true;
-		this.tyyppi = tyyppi;
-		this.vastauslista = new ArrayList<Vastaus>();
+		//this.setKysely(kysely);
 	}
 
-    
-    public Long getId() {
+
+  /*  
+    public Kysely getKysely() {
+		return kysely;
+	}
+
+	public void setKysely(Kysely kysely) {
+		this.kysely = kysely;
+	}
+*/
+	public Long getId() {
 		return id;
 	}
 

@@ -30,10 +30,11 @@ public class PalautekyselyApplication {
 		return (args) -> {
 			
 			//tallennetaan 3 vastausta
-			
 			Kysely kysely1=new Kysely("ensimmäinen kysely","lisätiedot", new ArrayList<Kysymys>());
-			Kysely kysely2=new Kysely("toinen kysely","lisätiedot 2", new ArrayList<Kysymys>());
-			Vastaus vastaus1 = new Vastaus("Vastaus___1");
+			
+			kyselyrepo.save(kysely1);
+			kyselyrepo.save(new Kysely("toinen kysely","lisätiedot 2", new ArrayList<Kysymys>()));
+			/*Vastaus vastaus1 = new Vastaus("Vastaus___1");
 			Vastaus vastaus2 = new Vastaus("Vastaus___2");
 			Vastaus vastaus3 = new Vastaus("Vastaus3");
 			Vastaus vastaus4 = new Vastaus("myöhemmin lisättävä vastaus");
@@ -43,7 +44,9 @@ public class PalautekyselyApplication {
 			Kysymys kysymys1 = new Kysymys("Toimiiko?");
 			Kysymys kysymys2 = new Kysymys("Uuusi Kysymys?");
 			Kysymys kysymys3 = new Kysymys("Kolmas kysymys?");
-			
+			kysymys1.setKysely(kysely1);
+			kysymys2.setKysely(kysely2);
+			kysymys3.setKysely(kysely1);
 			
 
 			//liitetään vastaus 1 kysymys3:een
@@ -60,7 +63,7 @@ public class PalautekyselyApplication {
 			Tyyppi tyyppi2 = new Tyyppi("checkbox",jeejjee); 
 			Tyyppi tyyppi3 = new Tyyppi(); 
 			kysymys1.setTyyppi(tyyppi2);
-		
+			
 			kysymys3.setTyyppi(tyyppi3);
 			Tyyppi tyyppi1= new Tyyppi("radio",jeejjee);
 			kysymys2.setTyyppi(tyyppi1);
@@ -81,7 +84,7 @@ public class PalautekyselyApplication {
 			repository.save(kysymys3);
 			kyselyrepo.save(kysely1);
 			kyselyrepo.save(kysely2);
-		
+		*/
 		};
 	
 		}

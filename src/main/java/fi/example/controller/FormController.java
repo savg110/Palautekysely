@@ -79,13 +79,12 @@ public class FormController {
 			return "200";
 		}
 	@PostMapping("poistakysymys")
-	public String poistakysymys( @RequestBody long id ) {
-		System.out.println("poistettavan id: "+id);
-		kysrepo.delete(id);
+	public String poistakysymys( @RequestBody Kysely kysely ) {	
+		kyselyrepo.save(kysely);
 		return "200";
 	}
 	@PostMapping("poistavastaus")
-	public String poistavastaus( @RequestBody long id ) {
+	public String poistavastaus( @RequestBody Vastaus id ) {
 		System.out.println("poistettavan id: "+id);
 		vasrepo.delete(id);
 		return "200";
@@ -99,10 +98,9 @@ public class FormController {
 	
 	@PostMapping("lisaakysymys")
 	public String lisaakysymys( @RequestBody List<Kysymys> kysymys ) {
-			Kysely kysely = kyselyrepo.findOne(kysymys.get(0).getId());
-			kysely.getKysymyslista().add(kysymys.get(1));
-			
-			kysrepo.save(kysymys.get(1));
+		Kysely kysely = kyselyrepo.findOne(kysymys.get(0).getId());
+		kysely.getKysymyslista().add(kysymys.get(1));
+		kysrepo.save(kysymys.get(1));
 						
 		return "200";
 	}

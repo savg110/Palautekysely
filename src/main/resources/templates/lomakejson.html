@@ -22,12 +22,18 @@ margin-top:10px;
   .form-inline > div > label > textarea {
    margin-top:5px;
 }
- .form-inline > div > label {
+ .form-inline > div > label{
    margin-right:15px;
 }
+
+
  .form-inline > div >input,.form-inline > div >select{
    margin-left:15px;
    margin-right:20px;
+}
+.vaihtoehto{
+	margin-top:13px;
+	margin-bottom:13px
 }
 </style>
 <script>
@@ -78,7 +84,8 @@ margin-top:10px;
 
 	<div class="page-header" >
 		
-	 	<h2>Valitse kysely?</h2>	
+	 	<h1>Palautekysely</h1>
+	 	<p>Voit vastata kyselyihin ja muokata kyselyita haluamallasi tavalla. Aloita valitsemalla kysely.</p>	
 	</div>
 	 	<div>
 	 	<select class="form-control" ng-init="kyselyalku='alku'" ng-model="kyselyalku">
@@ -89,34 +96,35 @@ margin-top:10px;
 
 
 
-
 <form name="lomake"  ng-submit="submitForm()" >
 
   			<div class="form-group" ng-repeat="(index, kysymys) in myWelcome[kyselyalku].kysymyslista" >
   				<div>	
-    				<h3 for="kys_{{$index}}" ng-cloak>{{kysymys.id}}. {{ kysymys.kysymys }}</h3>	
+    				<h3  ng-cloak>{{kysymys.id}}. {{ kysymys.kysymys }}</h3>	
     			</div>
-    			<div class="radio-inline" ng-if="kysymys.tyyppi.tyyppi=='radio'" ng-repeat="(i, vaihtoehto) in kysymys.tyyppi.vaihtoehdot track by i">
-    			<label class="radio-inline">
-   		 		</label>
-   		 		<input type="{{kysymys.tyyppi.tyyppi}}"  name="kys_{{$index}}" value="{{vaihtoehto}}" ng-model="vastaukset[kysymys.id]" required >
-   		 			{{vaihtoehto}}
-   		 		</label>
-   			 </div>
-   			<div class="" ng-if="kysymys.tyyppi.tyyppi=='text'">
+    				
+    			<div class="radio-inline form-group" ng-if="kysymys.tyyppi.tyyppi=='radio'" ng-repeat="(i, vaihtoehto) in kysymys.tyyppi.vaihtoehdot track by i">
+    				<label class="radio-inline">
+   		 				<input type="{{kysymys.tyyppi.tyyppi}}"  name="kys_{{$index}}" value="{{vaihtoehto}}" ng-model="vastaukset[kysymys.id]" required >
+   		 					{{vaihtoehto}}
+   		 			</label>
+   			 	</div>
+   			<div class="form-group" ng-if="kysymys.tyyppi.tyyppi=='text'">
     			<input class="form-control" type="{{kysymys.tyyppi.tyyppi}}"  name="kys_{{$index}}" ng-model="vastaukset[kysymys.id]" required >
     		</div>
-    		<div class="checkbox-inline"  ng-if="kysymys.tyyppi.tyyppi=='checkbox'" ng-repeat="(i, vaihtoehto) in kysymys.tyyppi.vaihtoehdot track by i" >
+    		<div class="checkbox-inline form-group"  ng-if="kysymys.tyyppi.tyyppi=='checkbox'" ng-repeat="(i, vaihtoehto) in kysymys.tyyppi.vaihtoehdot track by i" >
+    		<label class="radio-inline">
     			<input type="{{kysymys.tyyppi.tyyppi}}"  name="kys_{{$i}}" ng-model="vastaukset[kysymys.id][i]" ng-true-value="'{{vaihtoehto}}'" ng-required="value.length==0">
     				{{vaihtoehto}}
-    			</input>
+    		</label>
+    			
  			</div>
  				<div>
  				 <p class="help-block" ng-show="lomake['kys_' + $index].$touched && lomake['kys_' + $index].$invalid" >Kenttä ei saa olla tyhjä</p>
  				</div>
- 				<div class="">
-    				<button class="btn btn-danger poistonappi btn-primary btn-xs"  ng-click="removeQuestion(kysymys.id)">Poista kysymys</button>
-    			</div>
+ 			<div class=form-group>
+ 				<button class="btn btn-danger  btn-primary btn-xs poistonappi"  ng-init="id[index]=kysymys.id" ng-click="removeQuestion(index,kysymys)">Poista kysymys</button>
+ 			</div>
     	
  			</div>
  				 	 
@@ -127,12 +135,15 @@ margin-top:10px;
 
 
 </form>
-
+<hr>
+<div class="page-header">
+	<h3>Kyselyiden muokkaus</h3>
+</div>
 <form class="form-inline" name="lisaakysymys" ng-submit="addQuestion()" >
 
  	<div class="form-group ">
     	<label class="control-label">Lisää uusi kysymys:</label>
-    	<input type="text" class="form-control" name="uusikysymys" ng-model="kysymys" placeholder="Syötä kysymys..." required/>
+    	<input type="text" class="form-control" name="uusikysymys" ng-model="uusikysymys" placeholder="Syötä kysymys..." required/>
     </div>
     <div class="form-group ">
     <label class="control-label">Tyyppi: </label>
@@ -150,20 +161,26 @@ margin-top:10px;
  		<option ng-repeat="(index, kysely) in myWelcome" value="{{kysely.id}}">{{kysely.nimi}}</option>
 	</select>
 	</div>
-	
-	<div class="form-group" ng-if="tyyppi=='radio' || tyyppi=='checkbox'">
-	<input type="text" class="form-control" name="uusikysymys" ng-model="vaihtoehdot[0]" required placeholder="vastausvaihtoehto1 / pakollinen..."/>
-	<input type="text" class="form-control" name="uusikysymys" ng-model="vaihtoehdot[1]" required placeholder="vastausvaihtoehto2 / pakollinen..."/>
-	<input type="text" class="form-control" name="uusikysymys" ng-model="vaihtoehdot[2]" value="" placeholder="vapaaehtoinen.."/>
-	<input type="text" class="form-control" name="uusikysymys" ng-model="vaihtoehdot[3]" value="" placeholder="vapaaehtoinen.."/>
-  	</div>
+		<div ng-if="tyyppi=='radio' || tyyppi=='checkbox'" class="form-group vaihtoehto">
+			<label class="control-label">Vaihtoehto(pakollinen): </label>
+			<input type="text" class="form-control" name="vaihtoehto1" ng-model="vaihtoehdot[0]" required placeholder="vastausvaihtoehto1 / pakollinen..."/>
+		</div>	
+		<div ng-if="tyyppi=='radio' || tyyppi=='checkbox'" class="form-group vaihtoehto">
+			<label class="control-label">Vaihtoehto(pakollinen): </label>
+			<input type="text" class="form-control" name="vaihtoehto2" ng-model="vaihtoehdot[1]" required placeholder="vastausvaihtoehto2 / pakollinen..."/>
+		</div>	
+		<div  ng-if="tyyppi=='radio' || tyyppi=='checkbox'" class="form-group vaihtoehto">	
+			<label class="control-label">Vaihtoehto: </label>
+			<input type="text" class="form-control" name="vaihtoehto3" ng-model="vaihtoehdot[2]" value="" placeholder="vapaaehtoinen.."/>
+  		</div>	
+  	
  	
 
   <div class="form-group" >
 	<button type="submit" class="btn btn-primary" ng-disabled="lisaakysymys.$invalid">Lisää uusi kysymys</button>
   </div>
 </form>
-
+<hr>
 <form class="form-inline" name="lisaakysely"  ng-submit="lisaaKysely()" >
 
   <div class="form-group">
@@ -179,13 +196,19 @@ margin-top:10px;
 	<button type="submit" class="btn btn-primary" ng-disabled="lisaakysely.$invalid">Lisää uusi kysely</button>
 	</div>
 </form>
-
-<form class="form-inline">
+<hr>
+<form class="form-inline" name="poistakysely" ng-submit="poistaKysely()">
 	<div class="form-group">
-		<button type="submit" class="btn btn-primary" ng-click="poistaKysely()">Poista kysely</button>
+	<label class="control-label">Poista kysely: </label>
+	 <select class="form-control" ng-model="poistakysely" ng-init="poistakysely='kysely'" required>
+		 <option disabled value="kysely">-- Valitse Kysely --</option>
+ 		<option ng-repeat="(index, poistakysely) in myWelcome" value="{{poistakysely.id}}">{{poistakysely.nimi}}</option>
+	</select>
+	</div>
+	<div class="form-group">
+		<button type="submit" class="btn btn-primary">Poista kysely</button>
 	</div>
 </form>
-
 
 </div>
 
@@ -198,7 +221,7 @@ app.controller('myCtrl', function($scope, $http,$window) {
       $scope.myWelcome = response.data;
       console.log($scope.myWelcome);     
   });
- 
+  $scope.id;
   $scope.vastaukset = {};
   $scope.indeksi;
   $scope.submitForm=function(){
@@ -232,6 +255,7 @@ app.controller('myCtrl', function($scope, $http,$window) {
   				       
   	};
   	$scope.kysely;
+  	$scope.uusikysymys;
   	$scope.kyselyalku;
   	$scope.vaihtoehdot=[];
   $scope.addQuestion = function(){
@@ -243,7 +267,7 @@ app.controller('myCtrl', function($scope, $http,$window) {
   		}
   	});
 	
-  	palaute=[{id: $scope.kysely, kysymys: $scope.kysymys },{ kysymys: $scope.kysymys, tyyppi: { tyyppi: $scope.tyyppi, vaihtoehdot:$scope.vaihtoehdot }}];
+  	palaute=[{id: $scope.kysely, kysymys: $scope.uusikysymys },{ kysymys: $scope.uusikysymys, tyyppi: { tyyppi: $scope.tyyppi, vaihtoehdot:$scope.vaihtoehdot }}];
   	//console.log(palaute);
   	$http.post('lisaakysymys', JSON.stringify(palaute),{
          headers : {
@@ -256,10 +280,10 @@ app.controller('myCtrl', function($scope, $http,$window) {
   
 
   };
-  $scope.uusikysely
+  $scope.uusikysely;
   $scope.lisaaKysely=function(){
 	    //console.log($scope.uusikysely);
-	  	$http.post('lisaakysely', JSON.stringify({ nimi: $scope.uusikysely[0], info: $scope.uusikysely[0] }),{
+	  	$http.post('lisaakysely', JSON.stringify({ nimi: $scope.uusikysely[0], info: $scope.uusikysely[1] }),{
 	         headers : {
 	                    'Content-Type': 'application/json'
 	                }}).success(function(response) {
@@ -267,9 +291,11 @@ app.controller('myCtrl', function($scope, $http,$window) {
 	      						//alert('Thank you…!');
 	  						});
 	  };
-  $scope.removeQuestion=function(questionID){
-  
-  	$http.post('poistakysymys', JSON.stringify(questionID),{
+  $scope.removeQuestion=function(i,question){
+  	console.log(question);
+  	indeksi=$scope.myWelcome[i].kysymyslista.indexOf(question)
+  	$scope.myWelcome[i].kysymyslista.splice(indeksi,1);
+  	$http.post('poistakysymys', JSON.stringify({id:$scope.myWelcome[i].id, nimi: $scope.myWelcome[i].nimi, info:$scope.myWelcome[i].info ,kysymyslista: $scope.myWelcome[i].kysymyslista}),{
          headers : {
                     'Content-Type': 'application/json'
                 }}).success(function(response) {
@@ -277,9 +303,10 @@ app.controller('myCtrl', function($scope, $http,$window) {
       						//alert('Thank you…!');
   						});
   };
+  $scope.poistakysely;
   $scope.poistaKysely=function(){
 	  
-	  	$http.post('poistakysely', JSON.stringify(1),{
+	  	$http.post('poistakysely', JSON.stringify($scope.poistakysely),{
 	         headers : {
 	                    'Content-Type': 'application/json'
 	                }}).success(function(response) {

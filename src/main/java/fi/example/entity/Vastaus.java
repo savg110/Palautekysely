@@ -20,8 +20,10 @@ public class Vastaus implements Serializable {
 	@Size(min = 1, max = 30)
 	private String vastaus;
 	
-	public Vastaus() {}
-	
+	public Vastaus() {
+		super();
+	}
+		
 	public Vastaus(String vastaus) {
 		super();
 		this.vastaus = vastaus;

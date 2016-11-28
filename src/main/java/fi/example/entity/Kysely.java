@@ -11,7 +11,10 @@ import javax.persistence.FetchType;
 import javax.persistence.GeneratedValue;
 import javax.persistence.GenerationType;
 import javax.persistence.Id;
+import javax.persistence.JoinColumn;
+import javax.persistence.JoinTable;
 import javax.persistence.ManyToMany;
+import javax.persistence.OneToMany;
 
 @Entity
 public class Kysely implements Serializable{
@@ -29,11 +32,19 @@ public class Kysely implements Serializable{
     private Long id;
 	private String nimi;
 	private String info;
-	@ManyToMany(fetch=FetchType.LAZY)
-    private List<Kysymys> kysymyslista;
+	//@ManyToMany(fetch=FetchType.LAZY)
+	@OneToMany(fetch = FetchType.LAZY)
+	@JoinTable(name="kysymyslista", joinColumns={@JoinColumn(name="KYSYMYS_ID", referencedColumnName="ID")}, inverseJoinColumns={@JoinColumn(name="KYSELY_ID", referencedColumnName="ID")})
+	private List<Kysymys> kysymyslista;
 	
 	public Kysely() {
 		super();
+	}
+	public Kysely(String id){
+		super();
+		this.id=Long.parseLong(id);
+		this.nimi="testi";
+		this.info="testi";
 	}
 	
 	public Kysely(String nimi, String info, List<Kysymys> kysymyslista) {
