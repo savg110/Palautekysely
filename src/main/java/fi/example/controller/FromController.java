@@ -4,7 +4,16 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+<<<<<<< HEAD:src/main/java/fi/example/controller/FromController.java
 import org.springframework.security.access.annotation.Secured;
+=======
+import org.springframework.http.ResponseEntity;
+import org.springframework.stereotype.Controller;
+import org.springframework.ui.Model;
+import org.springframework.validation.BindingResult;
+import org.springframework.validation.Errors;
+import org.springframework.validation.annotation.Validated;
+>>>>>>> 5635a31b1761675f407f1bb494e6ec64bf0ca8dd:src/main/java/fi/example/controller/FormController.java
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -21,8 +30,13 @@ import fi.example.entity.Vastaus;
 import fi.example.entity.VastausCRUDRepo;
 
 
+<<<<<<< HEAD:src/main/java/fi/example/controller/FromController.java
 @CrossOrigin
 @Secured("ROLE_ADMIN")
+=======
+
+@CrossOrigin
+>>>>>>> 5635a31b1761675f407f1bb494e6ec64bf0ca8dd:src/main/java/fi/example/controller/FormController.java
 @RestController
 @RequestMapping (value= "/")
 
