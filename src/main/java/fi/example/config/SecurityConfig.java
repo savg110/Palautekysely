@@ -19,6 +19,7 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
         .and().authorizeRequests().antMatchers("/static/css").permitAll()
         .and().authorizeRequests().antMatchers("/static/js").permitAll()
         .and().formLogin().loginPage("/login").permitAll()
+        .and().httpBasic().realmName("OAuth Server")
         .and().authorizeRequests().antMatchers("/user/**").authenticated()
         .and().authorizeRequests().antMatchers("/admin/**").hasRole("ADMIN")
         .and().exceptionHandling().accessDeniedPage("/access_denied");    	
@@ -38,8 +39,5 @@ public class SecurityConfig extends WebSecurityConfigurerAdapter {
 				.withUser("kala").password("kalan").roles("USER")
 				.and().withUser("kissa").password("kissan").roles("ADMIN","USER");
     	}
-    
-
-
    
 }

@@ -24,7 +24,7 @@ import fi.example.entity.VastausCRUDRepo;
 @CrossOrigin
 @Secured("ROLE_ADMIN")
 @RestController
-
+@RequestMapping (value= "/")
 
 public class FromController {
 	@Autowired
@@ -34,24 +34,24 @@ public class FromController {
 	@Autowired
 	KyselyCRUDRepo kyselyrepo;
 	
-	@GetMapping (value = "lomakejson/kysymyslista")
+	@GetMapping ("kysymyslista")
 	public List<Kysymys> haeKysymyksetJSON() {
 		System.out.println(kysrepo.findAll());
 		 return (List<Kysymys>) kysrepo.findAll();
 	}
-	@GetMapping (value = "lomakejson/kyselylista")
+	@GetMapping ("kyselylista")
 	public List<Kysely> haeKyselytJSON() {
 		System.out.println(kyselyrepo.findAll());
 		 return (List<Kysely>) kyselyrepo.findAll();
 	}
-	@GetMapping("kysymys/{id}")
+	@GetMapping ("kysymys/{id}")
 	public Kysymys kysymys( @PathVariable long id) {	
 		Kysymys kys =  kysrepo.findOne(id);
 		List<Vastaus> lista = new ArrayList<Vastaus>();
 		kys.setVastauslista(lista);
 		return kys;
 	}
-	@GetMapping("kysely/{id}")
+	@GetMapping ("kysely/{id}")
 	public Kysely Kysely( @PathVariable long id) {	
 		Kysely kysely =  kyselyrepo.findOne(id);
 		List<Kysymys> kysymyslista=kysely.getKysymyslista();
@@ -63,7 +63,7 @@ public class FromController {
 		return kysely;
 	}
 	
-	@PostMapping("tallenna")
+	@PostMapping ("tallenna")
 	public String tallenna( @RequestBody List<Vastaus> vastauslista) { 
 			System.out.println("vastausta tuli: "+vastauslista);
 			for (Vastaus vastaus : vastauslista){

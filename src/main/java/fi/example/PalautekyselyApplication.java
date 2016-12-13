@@ -2,22 +2,46 @@ package fi.example;
 
 import java.util.ArrayList;
 
+import javax.annotation.PostConstruct;
+import javax.sql.DataSource;
+
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.boot.CommandLineRunner;
 import org.springframework.boot.SpringApplication;
 import org.springframework.boot.autoconfigure.SpringBootApplication;
 import org.springframework.context.annotation.Bean;
+import org.springframework.jdbc.core.JdbcTemplate;
 
-
-import fi.example.entity.Kysymys;
-import fi.example.entity.KysymysCRUDRepo;
-import fi.example.entity.Tyyppi;
-import fi.example.entity.Vastaus;
-import fi.example.entity.VastausCRUDRepo;
 import fi.example.entity.Kysely;
 import fi.example.entity.KyselyCRUDRepo;
+import fi.example.entity.Kysymys;
+import fi.example.entity.KysymysCRUDRepo;
+import fi.example.entity.VastausCRUDRepo;
 
 @SpringBootApplication
 public class PalautekyselyApplication {
+
+    private static final String CREATE_OAUTH_ACCESS_TOKEN_SQL = "create table if not exists oauth_access_token ("+
+            "token_id VARCHAR(256),"+
+            "token LONGVARBINARY,"+
+            "authentication_id VARCHAR(256),"+
+            "user_name VARCHAR(256),"+
+            "client_id VARCHAR(256),"+
+            "authentication LONGVARBINARY,"+
+            "refresh_token VARCHAR(256)"+
+            ");";
+
+    private static final String DELETE_TOKENS_SQL = "delete from oauth_access_token";
+
+    @Autowired
+    private DataSource dataSource;
+
+    @PostConstruct
+    public void setUpTokenDatasource() {
+        JdbcTemplate jdbcTemplate = new JdbcTemplate(dataSource);
+        jdbcTemplate.execute(CREATE_OAUTH_ACCESS_TOKEN_SQL);
+        jdbcTemplate.execute(DELETE_TOKENS_SQL);
+    }
 
 
 
@@ -84,8 +108,9 @@ public class PalautekyselyApplication {
 			repository.save(kysymys3);
 			kyselyrepo.save(kysely1);
 			kyselyrepo.save(kysely2);
-		*/
-		};
+		*/ };
+		
+		
 	
 		}
 	}
