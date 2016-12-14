@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface VastausCRUDRepo extends CrudRepository<Vastaus, Long> {
-   
+
 }

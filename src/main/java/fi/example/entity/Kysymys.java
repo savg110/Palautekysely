@@ -4,44 +4,52 @@ import java.io.Serializable;
 import java.util.ArrayList;
 import java.util.List;
 
-import javax.persistence.*;
+import javax.persistence.CascadeType;
+import javax.persistence.Entity;
+import javax.persistence.GeneratedValue;
+import javax.persistence.GenerationType;
+import javax.persistence.Id;
+import javax.persistence.OneToMany;
+import javax.persistence.OneToOne;
 
 @Entity
-public class Kysymys implements Serializable{
+public class Kysymys implements Serializable {
 
 	private static final long serialVersionUID = 5186081615228513721L;
-	
+
 	@Id
-    @GeneratedValue(strategy=GenerationType.AUTO)
-    private Long id;
-    private String kysymys;
+	@GeneratedValue(strategy = GenerationType.AUTO)
+	private Long id;
+	private String kysymys;
 	private boolean enabled;
 	@OneToOne(cascade = CascadeType.ALL)
 	private Tyyppi tyyppi;
 	@OneToMany
-    private List<Vastaus> vastauslista;
+	private List<Vastaus> vastauslista;
 
+	@SuppressWarnings("unused")
 	private Kysymys() {
 		super();
 	}
 
-    public Kysymys(String kysymys, String tyyppistring, String[] vaihtoehdot) {
-    	super();
-    	this.kysymys = kysymys;
-        this.enabled = true;
-        this.vastauslista = new ArrayList<Vastaus>();
-        this.tyyppi= new Tyyppi(tyyppistring, vaihtoehdot);
-    }
-    
-    public Kysymys(String kysymys, List<Vastaus> vastauslista) {
-        super();
-    	this.kysymys = kysymys;
-        this.enabled = true;
-        this.vastauslista= vastauslista;
-        this.setTyyppi(new Tyyppi());
-    }
-    
-    public Kysymys(String kysymys, boolean enabled, Tyyppi tyyppi, List<Vastaus> vastauslista) {
+	public Kysymys(String kysymys, String tyyppistring, String[] vaihtoehdot) {
+		super();
+		this.kysymys = kysymys;
+		this.enabled = true;
+		this.vastauslista = new ArrayList<Vastaus>();
+		this.tyyppi = new Tyyppi(tyyppistring, vaihtoehdot);
+	}
+
+	public Kysymys(String kysymys, List<Vastaus> vastauslista) {
+		super();
+		this.kysymys = kysymys;
+		this.enabled = true;
+		this.vastauslista = vastauslista;
+		this.setTyyppi(new Tyyppi());
+	}
+
+	public Kysymys(String kysymys, boolean enabled, Tyyppi tyyppi,
+			List<Vastaus> vastauslista) {
 		super();
 		this.kysymys = kysymys;
 		this.enabled = enabled;
@@ -56,8 +64,7 @@ public class Kysymys implements Serializable{
 	public String getKysymys() {
 		return kysymys;
 	}
-	
-	
+
 	public boolean isEnabled() {
 		return enabled;
 	}
@@ -66,11 +73,9 @@ public class Kysymys implements Serializable{
 		this.enabled = enabled;
 	}
 
-
 	public List<Vastaus> getVastauslista() {
 		return vastauslista;
 	}
-
 
 	public void setId(Long id) {
 		this.id = id;
@@ -84,8 +89,7 @@ public class Kysymys implements Serializable{
 		this.vastauslista = vastauslista;
 	}
 
-
-    public Tyyppi getTyyppi() {
+	public Tyyppi getTyyppi() {
 		return tyyppi;
 	}
 
@@ -95,8 +99,9 @@ public class Kysymys implements Serializable{
 
 	@Override
 	public String toString() {
-		return "Kysymys [id=" + id + ", kysymys=" + kysymys + ", enabled=" + enabled + ", tyyppi=" + tyyppi
-				+ ", vastauslista=" + vastauslista + "]";
+		return "Kysymys [id=" + id + ", kysymys=" + kysymys + ", enabled="
+				+ enabled + ", tyyppi=" + tyyppi + ", vastauslista="
+				+ vastauslista + "]";
 	}
-  
+
 }
