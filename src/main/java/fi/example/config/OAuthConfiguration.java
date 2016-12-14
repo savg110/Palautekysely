@@ -16,27 +16,27 @@ import org.springframework.security.oauth2.provider.token.store.JdbcTokenStore;
 @EnableAuthorizationServer
 public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
 
-	@Autowired
-	private DataSource dataSource;
+    @Autowired
+    private DataSource dataSource;
 
-	@Bean
-	public TokenStore tokenStore() {
-		return new JdbcTokenStore(dataSource);
-	}
+    @Bean
+    public TokenStore tokenStore() {
+        return new JdbcTokenStore(dataSource);
+    }
 
-	@Override
-	public void configure(AuthorizationServerEndpointsConfigurer endpoints)
-			throws Exception {
-		endpoints.tokenStore(tokenStore());
-	}
-
-	@Override
-	public void configure(ClientDetailsServiceConfigurer clients)
-			throws Exception {
-		clients.inMemory().withClient("web")
-				.redirectUris("http://palautekysely.mybluemix.net/")
-				.resourceIds("fi.example").scopes("read")
-				.authorizedGrantTypes("implicit");
-	}
+    @Override
+    public void configure(AuthorizationServerEndpointsConfigurer endpoints) throws Exception {
+        endpoints.tokenStore(tokenStore());
+    }
+    
+    @Override
+    public void configure(ClientDetailsServiceConfigurer clients) throws Exception {
+        clients.inMemory()
+               .withClient("web")
+               .redirectUris("http://palautekysely.mybluemix.net/")
+               .resourceIds("fi.example")
+               .scopes("read", "write")
+               .authorizedGrantTypes("implicit");
+}
 
 }
