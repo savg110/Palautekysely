@@ -4,9 +4,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.security.access.annotation.Secured;
 import org.springframework.security.access.prepost.PreAuthorize;
-import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -21,8 +19,8 @@ import fi.example.entity.KysymysCRUDRepo;
 import fi.example.entity.Vastaus;
 import fi.example.entity.VastausCRUDRepo;
 
-@CrossOrigin
-@Secured("ROLE_ADMIN")
+
+
 @RestController
 @RequestMapping(value = "/")
 public class FormController {
@@ -33,18 +31,21 @@ public class FormController {
 	@Autowired
 	KyselyCRUDRepo kyselyrepo;
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("kysymyslista")
 	public List<Kysymys> haeKysymyksetJSON() {
 		System.out.println(kysymysrepo.findAll());
 		return (List<Kysymys>) kysymysrepo.findAll();
 	}
-
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("kyselylista")
 	public List<Kysely> haeKyselytJSON() {
 		System.out.println(kyselyrepo.findAll());
 		return (List<Kysely>) kyselyrepo.findAll();
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("kysymys/{id}")
 	public Kysymys kysymys(@PathVariable long id) {
 		Kysymys kys = kysymysrepo.findOne(id);
@@ -52,7 +53,8 @@ public class FormController {
 		kys.setVastauslista(lista);
 		return kys;
 	}
-
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@GetMapping("kysely/{id}")
 	public Kysely Kysely(@PathVariable long id) {
 		Kysely kysely = kyselyrepo.findOne(id);
@@ -64,7 +66,8 @@ public class FormController {
 		kysely.setKysymyslista(kysymyslista);
 		return kysely;
 	}
-
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("lisaakysymys")
 	public String lisaakysymys(@RequestBody List<Kysymys> kysymys) {
 		Kysely kysely = kyselyrepo.findOne(kysymys.get(0).getId());
@@ -74,7 +77,7 @@ public class FormController {
 		return "200";
 	}
 
-	@PreAuthorize("hasRole('ROLE_USER')")
+	@PreAuthorize("hasRole('ROLE_USER') and hasRole('ROLE_ADMIN')") 
 	@PostMapping(value = { "tallenna", "lisaavastaus" })
 	public String tallenna(@RequestBody List<Vastaus> vastauslista) {
 		System.out.println("vastausta tuli: " + vastauslista);
@@ -86,19 +89,22 @@ public class FormController {
 		}
 		return "200";
 	}
-
+	
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("lisaakysely")
 	public String lisaakysymys(@RequestBody Kysely kysely) {
 		kyselyrepo.save(kysely);
 		return "200";
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("poistakysymys")
 	public String poistakysymys(@RequestBody Kysely kysely) {
 		kyselyrepo.save(kysely);
 		return "200";
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("poistavastaus")
 	public String poistavastaus(@RequestBody Vastaus id) {
 		System.out.println("poistettavan id: " + id);
@@ -106,6 +112,7 @@ public class FormController {
 		return "200";
 	}
 
+	@PreAuthorize("hasRole('ROLE_ADMIN')")
 	@PostMapping("poistakysely")
 	public String poistakysely(@RequestBody long id) {
 		System.out.println("poistettavan id: " + id);
