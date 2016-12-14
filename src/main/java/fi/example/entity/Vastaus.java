@@ -3,14 +3,10 @@ package fi.example.entity;
 import java.io.Serializable;
 
 import javax.persistence.*;
-import javax.validation.constraints.NotNull;
 import javax.validation.constraints.Size;
 
 @Entity
 public class Vastaus implements Serializable {
-	/**
-	 * 
-	 */
 	private static final long serialVersionUID = -3190676321479581507L;
 	
 	@Id
@@ -41,17 +37,13 @@ public class Vastaus implements Serializable {
 		this.id = id;
 	}
 
-
 	public void setVastaus(String vastaus) {
 		this.vastaus = vastaus;
 	}
-
-
 
 	@Override
 	public String toString() {
 		return "Vastaus [id=" + id + ", vastaus=" + vastaus + "]";
 	}
-
 	
 }
