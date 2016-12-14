@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.annotation.Secured;
+import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.web.bind.annotation.CrossOrigin;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -73,6 +74,7 @@ public class FormController {
 		return "200";
 	}
 
+	@PreAuthorize("hasRole('ROLE_USER')")
 	@PostMapping(value = { "tallenna", "lisaavastaus" })
 	public String tallenna(@RequestBody List<Vastaus> vastauslista) {
 		System.out.println("vastausta tuli: " + vastauslista);
