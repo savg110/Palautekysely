@@ -18,16 +18,6 @@ import fi.example.entity.KysymysCRUDRepo;
 import fi.example.entity.Vastaus;
 import fi.example.entity.VastausCRUDRepo;
 
-//@RunWith(SpringRunner.class)
-//@SpringBootTest
-//public class PalautekyselyApplicationTests {
-//
-//	@Test
-//	public void contextLoads() {
-//	}
-//
-//}
-
 @RunWith(SpringRunner.class)
 @SpringBootTest
 public class PalautekyselyApplicationTests {
