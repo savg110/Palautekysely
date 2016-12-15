@@ -24,5 +24,3 @@ token request pyyntö esim.
 http://localhost:8080/oauth/authorize?client_id=web&response_type=token
 
 ### Todo next
-
-Mahdolisien virheiden korjaaminen ja sisällön siistiminen.
