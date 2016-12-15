@@ -14,7 +14,7 @@ public class Vastaus implements Serializable {
 
 	@Id
 	@GeneratedValue(strategy = GenerationType.AUTO)
-	private long id;
+	private Long id;
 	@Size(min = 1, max = 30)
 	private String vastaus;
 
@@ -27,7 +27,7 @@ public class Vastaus implements Serializable {
 		this.vastaus = vastaus;
 	}
 
-	public long getId() {
+	public Long getId() {
 		return id;
 	}
 
@@ -35,7 +35,7 @@ public class Vastaus implements Serializable {
 		return vastaus;
 	}
 
-	public void setId(long id) {
+	public void setId(Long id) {
 		this.id = id;
 	}
 
