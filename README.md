@@ -11,13 +11,18 @@ Haaga-Helian ohjelmistoprojekti-kurssilla toteutettavan Palautekyselylomakkeen b
 * Kyselyn voi laittaa näkyviin / poistaa näkyvistä
 * Kyselyn muokkaus ja siihen liittyvä autentikointi (vain kyselyn luoja voi muokata)
 * Digiprojekti 1 -kurssilta esitetään lisätoiveita ja muutostarpeita kurssin edetessä
+* oAuth token systeemi luoada käyttäjille.
 
 ## Toteutettu tähän mennessä
 
-### Spring boot / H2 Database / angularJS 
+### Spring boot / H2 Database / angularJS /spring security
 
 Rest rajapinta on pystyssä ja kuuntelee get-pyyntöja osoitteessa '/'. Kun sovellus käynnistyy, Commandlinerunner luo 3 kysymystä H2-tietokantaan, jotka ohjelma sitten hakee ja tulostaa. Uusien kyselyiden luonti toimii, kysymysten luonti ja poisto toimii. Vastaaminen toimii. Kyselyn voi valita listalta ja frontti näyttää kysymykset. Muokkaus ei toimi. Paranneltu frontin visuaalista ilmettä.
+oAuth token systeemi käyttäjille web rajapintaan ja muista web sovelluksista.
+
+token request pyyntö esim.
+http://localhost:8080/oauth/authorize?client_id=web&response_type=token
 
 ### Todo next
 
-Rakentaa kysymyksen muokkaus ja mahdollisesti authentikointi.
+Mahdolisien virheiden korjaaminen ja sisällön siistiminen.

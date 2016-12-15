@@ -103,17 +103,17 @@ margin-top:10px;
     				<h3  ng-cloak>{{kysymys.id}}. {{ kysymys.kysymys }}</h3>	
     			</div>
     				
-    			<div class="radio-inline form-group" ng-if="kysymys.tyyppi.tyyppi=='radio'" ng-repeat="(i, vaihtoehto) in kysymys.tyyppi.vaihtoehdot track by i">
-    				<label class="radio-inline">
-   		 				<input type="{{kysymys.tyyppi.tyyppi}}"  name="kys_{{$index}}" value="{{vaihtoehto}}" ng-model="vastaukset[kysymys.id]" required >
+    			<div class="radio-inline form-group" ng-if="kysymys.tyyppi.tyyppi=='radio'" >
+    				<label class="radio-inline" ng-repeat="(i, vaihtoehto) in kysymys.tyyppi.vaihtoehdot track by i">
+   		 				<input type="{{kysymys.tyyppi.tyyppi}}"  value='{{vaihtoehto}}' ng-model="vastaukset[kysymys.id]">
    		 					{{vaihtoehto}}
    		 			</label>
    			 	</div>
    			<div class="form-group" ng-if="kysymys.tyyppi.tyyppi=='text'">
     			<input class="form-control" type="{{kysymys.tyyppi.tyyppi}}"  name="kys_{{$index}}" ng-model="vastaukset[kysymys.id]" required >
     		</div>
-    		<div class="checkbox-inline form-group"  ng-if="kysymys.tyyppi.tyyppi=='checkbox'" ng-repeat="(i, vaihtoehto) in kysymys.tyyppi.vaihtoehdot track by i" >
-    		<label class="radio-inline">
+    		<div class="checkbox-inline form-group"  ng-if="kysymys.tyyppi.tyyppi=='checkbox'" >
+    		<label class="radio-inline" ng-repeat="(i, vaihtoehto) in kysymys.tyyppi.vaihtoehdot track by i" >
     			<input type="{{kysymys.tyyppi.tyyppi}}"  name="kys_{{$i}}" ng-model="vastaukset[kysymys.id][i]" ng-true-value="'{{vaihtoehto}}'" ng-required="value.length==0">
     				{{vaihtoehto}}
     		</label>
@@ -123,7 +123,7 @@ margin-top:10px;
  				 <p class="help-block" ng-show="lomake['kys_' + $index].$touched && lomake['kys_' + $index].$invalid" >Kenttä ei saa olla tyhjä</p>
  				</div>
  			<div class=form-group>
- 				<button class="btn btn-danger  btn-primary btn-xs poistonappi"  ng-init="id[index]=kysymys.id" ng-click="removeQuestion(index,kysymys)">Poista kysymys</button>
+ 				<button class="btn btn-danger  btn-primary btn-xs poistonappi"  ng-init="id[index]=kysymys.id" ng-click="removeQuestion(kysymys)">Poista kysymys</button>
  			</div>
     	
  			</div>
@@ -222,7 +222,7 @@ app.controller('myCtrl', function($scope, $http,$window) {
       console.log($scope.myWelcome);     
   });
   $scope.id;
-  $scope.vastaukset = {};
+  $scope.vastaukset = [];
   $scope.indeksi;
   $scope.submitForm=function(){
 
@@ -291,17 +291,24 @@ app.controller('myCtrl', function($scope, $http,$window) {
 	      						//alert('Thank you…!');
 	  						});
 	  };
-  $scope.removeQuestion=function(i,question){
-  	console.log(question);
-  	indeksi=$scope.myWelcome[i].kysymyslista.indexOf(question)
-  	$scope.myWelcome[i].kysymyslista.splice(indeksi,1);
-  	$http.post('poistakysymys', JSON.stringify({id:$scope.myWelcome[i].id, nimi: $scope.myWelcome[i].nimi, info:$scope.myWelcome[i].info ,kysymyslista: $scope.myWelcome[i].kysymyslista}),{
-         headers : {
-                    'Content-Type': 'application/json'
-                }}).success(function(response) {
-      						$window.location.reload();
-      						//alert('Thank you…!');
-  						});
+  $scope.removeQuestion=function(question){
+  	console.log("question",question);
+  	$.each($scope.myWelcome, function (index, value){
+  		console.log("indexof",value.kysymyslista.indexOf(question));
+  		if (value.kysymyslista.indexOf(question) != -1){
+  			kysymysindeksi=value.kysymyslista.indexOf(question);
+  			value.kysymyslista.splice(kysymysindeksi,1);
+  			console.log("muokattu value",$scope.myWelcome[index]);
+  		  	$http.post('poistakysymys', JSON.stringify($scope.myWelcome[index]),{
+  		         headers : {
+  		                    'Content-Type': 'application/json'
+  		                }}).success(function(response) {
+  		      						$window.location.reload();
+  		      						//alert('Thank you…!');
+  		  	});
+  		}	
+  	})
+
   };
   $scope.poistakysely;
   $scope.poistaKysely=function(){

@@ -5,5 +5,5 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface KyselyCRUDRepo extends CrudRepository<Kysely, Long> {
-   
+
 }
