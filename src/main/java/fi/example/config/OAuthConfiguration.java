@@ -35,6 +35,7 @@ public class OAuthConfiguration extends AuthorizationServerConfigurerAdapter {
                .withClient("web")
                .redirectUris("http://palautekysely.mybluemix.net/")
                .resourceIds("fi.example")
+               .autoApprove(true)
                .scopes("read", "write")
                .authorizedGrantTypes("implicit");
 }
